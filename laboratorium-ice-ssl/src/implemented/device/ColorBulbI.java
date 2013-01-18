@@ -14,9 +14,6 @@ import Ice.Current;
 
 public class ColorBulbI extends _ColorBulbDisp {
 
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 1L;
 	private boolean used = false;
 	private String userName = null;
@@ -47,7 +44,7 @@ public class ColorBulbI extends _ColorBulbDisp {
 	@Override
 	public synchronized void getControl(String userName, Current __current) throws DeviceAlreadyInUseException {
 		if (used) {
-			throw new DeviceAlreadyInUseException("Urzadzenie jest ju¿ u¿ywane przez kogoœ innego!");
+			throw new DeviceAlreadyInUseException("Urzadzenie jest juz uzywane przez kogos innego!");
 		}
 		used = true;
 		this.userName = userName;
@@ -56,7 +53,7 @@ public class ColorBulbI extends _ColorBulbDisp {
 	@Override
 	public synchronized void releaseControl(String userName, Current __current) throws IncorrectUserNameException {
 		if (!this.userName.equals(userName)) {
-			throw new IncorrectUserNameException(userName + "nie u¿ywa tego urz¹dzenia, wiêc nie mo¿e go zwolniæ");
+			throw new IncorrectUserNameException(userName + "nie uzywa tego urzadzenia, wiec nie moge zwolnic zasobow");
 		}
 		used = false;
 		userName = null;

@@ -2,7 +2,7 @@
 #ifndef SR_ICE
 #define SR_ICE
 
-#include <BuiltinSequences.ice>
+#include <Ice/BuiltinSequences.ice>
 
 //opcja kompilacji: -I .....slice\Ice CertSigner.ice
 

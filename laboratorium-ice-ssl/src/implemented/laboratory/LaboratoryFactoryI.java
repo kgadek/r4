@@ -59,9 +59,10 @@ public class LaboratoryFactoryI extends _LaboratoryFactoryDisp {
 				}
 				evictor.inject(availableDevices, deviceClass);
 			} catch (ClassNotFoundException e) {
-				System.out.println("B³¹d konfiguracji. Nie istnieje urz¹dzenie o podanym typie.");
+				System.out.println("Blad konfiguracji. Nie istnieje urzadzenie o podanym typie.");
 			}
 		}
+		br.close();
 	}
 
 	@Override
@@ -77,45 +78,4 @@ public class LaboratoryFactoryI extends _LaboratoryFactoryDisp {
 		}
 		return info;
 	}
-
-/*	@Override
-	public DevicePrx getDevice(String deviceName, Current __current) throws NoSuchDeviceException {
-		Class<?> c = deviceClass.get(deviceName);
-
-		if (availableDevices.isEmpty() || c == null) {
-			throw new NoSuchDeviceException();
-		}
-
-		DevicePrx dev = devices.get(deviceName);
-
-		if (dev == null) {
-			try {
-				dev = createServantForDevice(deviceName);
-			} catch (Exception e) {
-				System.out.println("B³¹d przy tworzeniu servanta");
-			}
-		}
-
-		return dev;
-	}
-
-	private DevicePrx createServantForDevice(String name) throws InstantiationException, IllegalAccessException,
-			ServantAlreadyActive, WrongPolicy, ServantNotActive {
-		Class<?> c = deviceClass.get(name);
-		Object o = (Object) c.newInstance();
-		
-		Ice.Identity id = new Ice.Identity(name, "");
-		adapter.add(o, id);
-		
-		ObjectPrx prx = adapter.createProxy(id);
-		
-		DevicePrx dev = DevicePrxHelper.uncheckedCast(prx);
-		
-		System.out.println("Stworzono servanta dla " + name);
-
-		devices.put(name, dev);
-
-		return dev;
-	}
-*/
 }

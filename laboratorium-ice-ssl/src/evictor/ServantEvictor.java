@@ -44,13 +44,13 @@ public class ServantEvictor implements ServantLocator {
 		if (dev == null) {
 			if (devices.size() >= maxSize)
 			{
-				System.out.println("Na serwerze jest za du¿o serwantów, próba ewikcji");
+				System.out.println("Na serwerze jest za duzo serwantow, proba ewikcji");
 				evict();
 			}
 			try {
 				dev = add(curr, cookie);
 			} catch (Exception e) {
-				System.out.println("B³¹d przy tworzeniu servanta");
+				System.out.println("Blad przy tworzeniu servanta");
 			}
 		}
 
@@ -61,7 +61,7 @@ public class ServantEvictor implements ServantLocator {
 	public synchronized void finished(Current curr, Ice.Object servant, java.lang.Object cookie) throws UserException {
 		if (devices.size() >= maxSize && curr.operation.equals("releaseControl") && curr.operation.equals("stopObsevation"))
 		{
-			System.out.println("Na serwerze jest za du¿o serwantów, próba ewikcji");
+			System.out.println("Na serwerze jest za duzo serwantow, proba ewikcji");
 			evict();
 		}
 	}
@@ -82,7 +82,7 @@ public class ServantEvictor implements ServantLocator {
 		
 		for (Ice.Identity id : toRemove) {
 			devices.remove(id);
-			System.out.println("Usuniêto servanta dla "+id.category + "/" + id.name);
+			System.out.println("Usunieto servanta dla "+id.category + "/" + id.name);
 		}
 	}
 	
@@ -102,10 +102,8 @@ public class ServantEvictor implements ServantLocator {
 
 	public synchronized boolean isUsed(Identity identity) {
 		Device dev = devices.get(identity);
-		if (dev != null) {
+		if (dev != null)
 			return dev.isUsed();
-		}
-		
 		return false;
 	}
 

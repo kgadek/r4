@@ -12,7 +12,6 @@ module generated {
 		
 		interface LaboratoryFactory {	
 			laboratoryDevices getLabStatus();
-//			generated :: devices :: Device* getDevice(string deviceName) throws generated :: exceptions :: NoSuchDeviceException;
 		};
 	};
 };	

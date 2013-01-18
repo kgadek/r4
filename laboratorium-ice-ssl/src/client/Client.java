@@ -27,21 +27,24 @@ public class Client extends Application {
 	private String userName;
 	private ObserverPrx obs;
 
-	public Client(String name) {
-		userName = name;
-	}
+	public Client() {
+	  userName = "unknown";
+		try {
+      userName = Client.br.readLine();
+    } catch (IOException e) {
+      e.printStackTrace();
+  }}
 
 	@Override
 	public int run(String[] args) {
+	  
 		setInterruptHook(new Thread() {
 			public void run() {
 				try {
 					communicator().destroy();
 				} catch (Ice.LocalException ex) {
 					ex.printStackTrace();
-				}
-			}
-		});
+		}}});
 		
 		lab = LaboratoryFactoryPrxHelper.checkedCast(communicator().propertyToProxy("LaboratoryFactory.Proxy"));
 		location = communicator().getProperties().getProperty("LaboratoryFactory.Proxy");
@@ -52,39 +55,32 @@ public class Client extends Application {
 				chooseDevice();
 			} catch (IOException e) {
 				e.printStackTrace();
-			}
-		}
-	}
+	}}};
 	
 	LabDevice[] showLabState() {
 		LabDevice[] status = lab.getLabStatus();
 		System.out.println("Stan laboratorium: ");
 		int i = 0;
 		for (LabDevice ld : status) {
-			System.out.println("[" + i + "] typ:" + ld.type + " nazwa:" + ld.deviceName + " u¿ywany:"
-					+ ((ld.used) ? "TAK" : "NIE"));
+			System.out.println("[" + i + "] typ:" + ld.type + " nazwa:" + ld.deviceName + " uzywany:"	+ (ld.used ? "TAK" : "NIE"));
 			i++;
 		}
-		System.out.println("Wybierz urz¹dzenie: [0-" + (i - 1) + "]. Wpisz koniec aby zakoñczyæ.");
+		System.out.println("Wybierz urzadzenie: [0-" + (i - 1) + "]. Wpisz koniec aby zakonczyc.");
 		return status;
 	}
 
 	void chooseDevice() throws IOException {
 		LabDevice[] status = showLabState();
-
 		String line;
-
 		line = br.readLine();
 				
-		if (line.equals("koniec")) {
+		if (line.equals("koniec"))
 			System.exit(0);
-		}
 
 		int devNo = Integer.parseInt(line);
-
 		DevicePrx chosen = DevicePrxHelper.checkedCast(communicator().stringToProxy(status[devNo].type+"/"+status[devNo].deviceName+location));
 		
-		System.out.println("Wybierz operacjê: ");
+		System.out.println("Wybierz operacje: ");
 		System.out.println("[0] Kontroluj ");
 		System.out.println("[1] Obserwuj ");
 		
@@ -95,28 +91,20 @@ public class Client extends Application {
 		if (tmp == 0) {
 			try {
 				chosen.getControl(userName);
-				
-				System.out.println("Obs³ugujesz urz¹dzenie, aby zakoñczyæ, wpisz koniec");
-				
+				System.out.println("Obslugujesz urzadzenie, aby zakonczyc, wpisz koniec");
 				controlDevice(chosen);
-				
-			} catch (DeviceAlreadyInUseException e) {
-				System.out.println(e.getMessage());
-				return;
-			} catch (IncorrectUserNameException e) {
+			} catch (DeviceAlreadyInUseException | IncorrectUserNameException e) {
 				System.out.println(e.getMessage());
 				return;
 			}
 		} else if (tmp == 1) {
 			try {
 				chosen.startObservation(getObserver());
-				System.out.println("Obserwujesz urz¹dzenie, aby zakoñczyæ, wpisz koniec");
-				
-				if ((line = br.readLine()) != null && line.equals("koniec")) {
+				System.out.println("Obserwujesz urzadzenie, aby zakonczyc, wpisz koniec");
+				if ((line = br.readLine()) != null && line.equals("koniec"))
 					chosen.stopObservation(getObserver());
-				}
 			} catch (UserAlreadyObserveException e) {
-				System.out.println("Ju¿ obserwujesz to urz¹dzenie");
+				System.out.println("Juz obserwujesz to urzadzenie");
 				return;
 			} catch (Exception e) {
 				System.out.println("Problem przy tworzeniu obserwatora");
@@ -129,7 +117,7 @@ public class Client extends Application {
 		for (String method : interf) {
 			System.out.println(method);
 		}
-		System.out.println("Aby wyœwietliæ tê informacjê ponownie, wpisz info. Wywo³anie metod nazwaMetody argument1 argument2 ...");
+		System.out.println("Aby wyswietlic te informacje ponownie, wpisz info. Wywolanie metod nazwaMetody argument1 argument2 ...");
 	}
 	
 	private void controlDevice(DevicePrx chosenDevice) throws IncorrectUserNameException, IOException {
@@ -157,7 +145,7 @@ public class Client extends Application {
 				} catch (NoSuchMethodException e) {
 					System.out.println(e.getMessage());
 				} catch (Exception e) {
-					System.out.println("Nast¹pi³ problem przy wywo³aniu metody " + e.getMessage());
+					System.out.println("Nastapil problem przy wywolaniu metody " + e.getMessage());
 				}
 			}
 		}
@@ -176,9 +164,9 @@ public class Client extends Application {
 	}
 
 	public static void main(String[] args) throws IOException {
-		System.out.println("Wpisz nazwê:");
+		System.out.println("Wpisz nazwe:");
 
-		Client app = new Client(Client.br.readLine());
+		Client app = new Client();
 
 		int status = app.main("Client", args, "config.client");
 		System.exit(status);

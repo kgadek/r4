@@ -1,11 +1,9 @@
 LaboratoryFactory.Proxy=laboratoryFactory:ssl -p 10000:udp -p 10000
-
 Observer.Endpoints=tcp -p 10003:udp -p 10003
-
 Ice.Warn.Connections=1
 
 Ice.Plugin.IceSSL=IceSSL.PluginFactory
 IceSSL.DefaultDir=.
-IceSSL.Keystore=c.jks
-IceSSL.Password=laboratorium
-IceSSL.Truststore=c.jks
+IceSSL.Keystore=cc.jks
+IceSSL.Password=asdfasdf
+IceSSL.Truststore=cc.jks
