@@ -1,0 +1,8 @@
+LaboratoryFactory.Endpoints=ssl -p 10000:udp -p 10000
+LaboratoryFactory.ThreadPool.Size=2
+LaboratoryFactory.ThreadPool.SizeMax=2
+Ice.Plugin.IceSSL=IceSSL.PluginFactory
+IceSSL.DefaultDir=.
+IceSSL.Keystore=s.jks
+IceSSL.Password=laboratorium
+IceSSL.Truststore=s.jks
