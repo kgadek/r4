@@ -68,19 +68,17 @@ public class TermoCameraI extends _TermoCameraDisp {
 
 	@Override
 	public synchronized void getControl(String userName, Current __current) throws DeviceAlreadyInUseException {
-		if (used) {
-			throw new DeviceAlreadyInUseException("Urzadzenie jest ju¿ u¿ywane przez kogoœ innego!");
-		}
-		used = true;
+	  if (used)
+      throw new DeviceAlreadyInUseException("urzadzenie zajete");
+    used = true;
 		this.userName = userName;
 	}
 
 	@Override
 	public synchronized void releaseControl(String userName, Current __current) throws IncorrectUserNameException {
-		if (!this.userName.equals(userName)) {
-			throw new IncorrectUserNameException(userName + "nie u¿ywa tego urz¹dzenia, wiêc nie mo¿e go zwolniæ");
-		}
-		used = false;
+	  if (!this.userName.equals(userName))
+      throw new IncorrectUserNameException(userName + "nie jest wlascicielem --- nie mozna zwolnic zasobow");
+    used = false;
 		userName = null;
 	}
 

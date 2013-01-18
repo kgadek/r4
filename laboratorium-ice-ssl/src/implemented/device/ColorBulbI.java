@@ -43,18 +43,16 @@ public class ColorBulbI extends _ColorBulbDisp {
 	
 	@Override
 	public synchronized void getControl(String userName, Current __current) throws DeviceAlreadyInUseException {
-		if (used) {
-			throw new DeviceAlreadyInUseException("Urzadzenie jest juz uzywane przez kogos innego!");
-		}
+		if (used)
+			throw new DeviceAlreadyInUseException("urzadzenie zajete");
 		used = true;
 		this.userName = userName;
 	}
 
 	@Override
 	public synchronized void releaseControl(String userName, Current __current) throws IncorrectUserNameException {
-		if (!this.userName.equals(userName)) {
-			throw new IncorrectUserNameException(userName + "nie uzywa tego urzadzenia, wiec nie moge zwolnic zasobow");
-		}
+		if (!this.userName.equals(userName))
+			throw new IncorrectUserNameException(userName + "nie jest wlascicielem --- nie mozna zwolnic zasobow");
 		used = false;
 		userName = null;
 	}
@@ -73,7 +71,7 @@ public class ColorBulbI extends _ColorBulbDisp {
 
 	@Override
 	public synchronized String getStatus(Current __current) {
-		return "wlaczona: " + ((on)?"tak":"nie") + " kolor: " + color;
+		return "swieci: " + (on?"tak":"nie") + " kolor: " + color;
 	}
 
 	@Override
