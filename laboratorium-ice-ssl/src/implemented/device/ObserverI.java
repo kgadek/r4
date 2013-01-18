@@ -5,12 +5,9 @@ import generated.devices._ObserverDisp;
 
 public class ObserverI extends _ObserverDisp {
 
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
+  private static final long serialVersionUID = -64542054755049480L;
 
-	@Override
+  @Override
 	public void updateStatus(String status, Current __current) {
 		System.out.println("Status " + status);
 	}

@@ -28,7 +28,7 @@ public class Client extends Application {
 	private ObserverPrx obs;
 
 	public Client() {
-	  userName = "unknown";
+	  userName = "joedoe";
 		try {
       userName = Client.br.readLine();
     } catch (IOException e) {
@@ -59,13 +59,13 @@ public class Client extends Application {
 	
 	LabDevice[] showLabState() {
 		LabDevice[] status = lab.getLabStatus();
-		System.out.println("Stan laboratorium: ");
+		System.out.println("zawartość laboratorium: ");
 		int i = 0;
 		for (LabDevice ld : status) {
 			System.out.println("[" + i + "] typ:" + ld.type + " nazwa:" + ld.deviceName + " uzywany:"	+ (ld.used ? "TAK" : "NIE"));
 			i++;
 		}
-		System.out.println("Wybierz urzadzenie: [0-" + (i - 1) + "]. Wpisz koniec aby zakonczyc.");
+		System.out.println("Wybierz urzadzenie: [0-" + (i - 1) + "]. Wpisz /q aby zakonczyc.");
 		return status;
 	}
 
@@ -74,15 +74,15 @@ public class Client extends Application {
 		String line;
 		line = br.readLine();
 				
-		if (line.equals("koniec"))
+		if (line.equals("/q"))
 			System.exit(0);
 
 		int devNo = Integer.parseInt(line);
 		DevicePrx chosen = DevicePrxHelper.checkedCast(communicator().stringToProxy(status[devNo].type+"/"+status[devNo].deviceName+location));
 		
 		System.out.println("Wybierz operacje: ");
-		System.out.println("[0] Kontroluj ");
-		System.out.println("[1] Obserwuj ");
+		System.out.println("  0) kontroluj ");
+		System.out.println("  1) obserwuj ");
 		
 		line = br.readLine();
 		
@@ -91,7 +91,7 @@ public class Client extends Application {
 		if (tmp == 0) {
 			try {
 				chosen.getControl(userName);
-				System.out.println("Obslugujesz urzadzenie, aby zakonczyc, wpisz koniec");
+				System.out.println("Obslugujesz urzadzenie, aby zakonczyc, wpisz /q");
 				controlDevice(chosen);
 			} catch (DeviceAlreadyInUseException | IncorrectUserNameException e) {
 				System.out.println(e.getMessage());
@@ -100,11 +100,11 @@ public class Client extends Application {
 		} else if (tmp == 1) {
 			try {
 				chosen.startObservation(getObserver());
-				System.out.println("Obserwujesz urzadzenie, aby zakonczyc, wpisz koniec");
-				if ((line = br.readLine()) != null && line.equals("koniec"))
+				System.out.println("Obserwujesz urzadzenie, aby zakonczyc, wpisz /q");
+				if ((line = br.readLine()) != null && line.equals("/q"))
 					chosen.stopObservation(getObserver());
 			} catch (UserAlreadyObserveException e) {
-				System.out.println("Juz obserwujesz to urzadzenie");
+				System.out.println("To urzadzenie juz jest obserwowane");
 				return;
 			} catch (Exception e) {
 				System.out.println("Problem przy tworzeniu obserwatora");
@@ -114,10 +114,9 @@ public class Client extends Application {
 	}
 
 	private void showInfo(String interf[]) {
-		for (String method : interf) {
+		for (String method : interf)
 			System.out.println(method);
-		}
-		System.out.println("Aby wyswietlic te informacje ponownie, wpisz info. Wywolanie metod nazwaMetody argument1 argument2 ...");
+		System.out.println("Aby wyswietlic ponownie, wpisz /info. Wywolanie metod: nazwaMetody [argumenty]");
 	}
 	
 	private void controlDevice(DevicePrx chosenDevice) throws IncorrectUserNameException, IOException {
@@ -128,10 +127,10 @@ public class Client extends Application {
 		
 		String line;
 		while ((line = br.readLine()) != null) {
-			if (line.equals("koniec")) {
+			if (line.equals("/q")) {
 				chosenDevice.releaseControl(userName);
 				break;
-			} else if (line.equals("info")) {
+			} else if (line.equals("/info")) {
 				showInfo(interf);
 			} else {
 				String[] command = line.split(" ");
@@ -164,10 +163,9 @@ public class Client extends Application {
 	}
 
 	public static void main(String[] args) throws IOException {
-		System.out.println("Wpisz nazwe:");
+		System.out.println("Wpisz nazwe uzytkownika:");
 
 		Client app = new Client();
-
 		int status = app.main("Client", args, "config.client");
 		System.exit(status);
 	}

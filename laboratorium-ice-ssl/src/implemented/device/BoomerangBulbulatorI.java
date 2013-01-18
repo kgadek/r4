@@ -21,23 +21,29 @@ public class BoomerangBulbulatorI extends _BoomerangBulbulatorDisp {
 	private boolean used = false;
 	private String userName = null;
 	private List<ObserverPrx> observers = new ArrayList<ObserverPrx>();
-	private String[] interfaceInfo = {"void dim()", "void bright()", "String turnOff()", "void turnOn()", "String getStatus()"}; 
+	private String[] interfaceInfo =  {
+                                	    "void throwAway()",
+                                	    "void getBack()",
+                                	    "void turnBulbulOff()",
+                                	    "void turnBulbulOn()",
+                                	    "String getStatus()"
+                                    }; 
 	
 	private boolean on = false;
-	private short brightness = 5;
+	private short distance = 5;
 	
 	@Override
 	public synchronized void throwAway(Current __current) {
-		if (this.brightness > 0) {
-			this.brightness--;
+		if (this.distance > 0) {
+			this.distance--;
 			actionPerformed();
 		}
 	}
 
 	@Override
 	public synchronized void getBack(Current ___current) {
-		if (this.brightness < 10) {
-			this.brightness++;
+		if (this.distance < 10) {
+			this.distance++;
 			actionPerformed();
 		}
 	}
@@ -82,7 +88,7 @@ public class BoomerangBulbulatorI extends _BoomerangBulbulatorDisp {
 
 	@Override
 	public synchronized String getStatus(Current __current) {
-		return "wlaczona: " + ((on)?"tak":"nie") + " jasnosc: " + brightness;
+		return "(bulbul?, odrzucenie): (" + (on?"tak":"nie") + ", " + distance + ")";
 	}
 
 	@Override

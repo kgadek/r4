@@ -18,14 +18,19 @@ public class ChameleonBulbulatorI extends _ChameleonBulbulatorDisp {
 	private boolean used = false;
 	private String userName = null;
 	private List<ObserverPrx> observers = new ArrayList<ObserverPrx>();
-	private String[] interfaceInfo = {"String changeColor()", "String turnOff()", "void turnOn()", "String getStatus()"}; 
+	private String[] interfaceInfo =  {
+                                	    "String changeColour()",
+                                	    "void turnBulbulOff()",
+                                	    "void turnBulbulOn()",
+                                	    "String getStatus()"
+                                    }; 
 	
 	private boolean on = false;
-	private String color = "white";
+	private String colour = "white";
 	
 	@Override
 	public synchronized void changeColour(String color, Current __current) {
-		this.color = color;
+		this.colour = color;
 		actionPerformed();
 	}
 	
@@ -71,7 +76,7 @@ public class ChameleonBulbulatorI extends _ChameleonBulbulatorDisp {
 
 	@Override
 	public synchronized String getStatus(Current __current) {
-		return "swieci: " + (on?"tak":"nie") + " kolor: " + color;
+	  return "(bulbul?, maskowanie): (" + (on?"tak":"nie") + ", " + colour + ")";
 	}
 
 	@Override
